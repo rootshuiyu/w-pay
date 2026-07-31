@@ -26,17 +26,14 @@ ENV GOPROXY=https://goproxy.cn,direct
 # 复制依赖文件
 COPY go.mod go.sum ./
 
-# 下载依赖
-RUN go mod download
-
 # 复制源代码
 COPY . .
 
 # 从前端构建阶段复制构建好的文件
 COPY --from=frontend-builder /web/dist ./web/dist
 
-# 构建应用
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o wpay main.go
+# 构建应用（自动下载依赖）
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -mod=mod -ldflags="-s -w" -o wpay main.go
 
 # 运行阶段
 FROM alpine:latest
