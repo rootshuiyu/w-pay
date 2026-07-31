@@ -16,6 +16,9 @@ COPY wpay .
 COPY config ./config
 COPY sql ./sql
 
+# 添加执行权限
+RUN chmod +x wpay
+
 # 创建必要的目录
 RUN mkdir -p /app/certs && \
     chown -R wpay:wpay /app
