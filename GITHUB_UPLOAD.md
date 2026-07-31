@@ -2,9 +2,9 @@
 
 ## 已创建的文件
 
-- ✅ `Dockerfile` - Docker 多阶段构建配置
+- ✅ `Dockerfile` - Docker 构建配置
 - ✅ `.dockerignore` - Docker 构建排除文件
-- ✅ `.github/workflows/docker-build.yml` - GitHub Actions 自动构建配置
+- ✅ `wpay` - 预构建的 Go 二进制文件
 
 ## 上传到 GitHub 的步骤
 
@@ -15,8 +15,7 @@
 3. 点击 "File" → "Add local repository"
 4. 选择 `c:\Users\Administrator\Desktop\wei` 目录
 5. 点击 "Publish repository" 发布到 GitHub
-6. 设置仓库名称（如：wpay）
-7. 推送后，GitHub Actions 会自动构建 Docker 镜像
+6. 设置仓库名称（如：w-pay）
 
 ### 方式二：使用 Git 命令行
 
@@ -45,33 +44,39 @@ git push -u origin main
 
 1. 在 GitHub 创建新仓库
 2. 上传整个 `wei` 文件夹的文件
-3. 推送后 GitHub Actions 会自动构建
 
-## GitHub Actions 工作原理
+## 手动构建 Docker 镜像
 
-推送到 GitHub 后，GitHub Actions 会自动：
-1. 检出代码
-2. 使用 Docker Buildx 构建镜像
-3. 将镜像推送到 GitHub Container Registry (ghcr.io)
-4. 支持多平台构建（目前配置为 linux/amd64）
+由于 GitHub Actions 缓存问题，建议手动构建 Docker 镜像：
 
-## 镜像标签规则
+### 在本地构建
 
-- `main` 分支：`ghcr.io/你的用户名/w-pay:main`
-- `v1.0.0` 标签：`ghcr.io/你的用户名/w-pay:1.0.0`
-- Pull Request：`ghcr.io/你的用户名/w-pay:pr-123`
+```powershell
+# 进入项目目录
+cd c:\Users\Administrator\Desktop\wei
+
+# 构建 Docker 镜像
+docker build -t wpay:latest .
+```
+
+### 在服务器上构建
+
+1. 克隆代码到服务器：
+```bash
+git clone https://github.com/rootshuiyu/w-pay.git
+cd w-pay
+```
+
+2. 构建 Docker 镜像：
+```bash
+docker build -t wpay:latest .
+```
 
 ## 在服务器上使用镜像
 
-构建完成后，在服务器 8.219.129.48 上：
+在服务器 8.219.129.48 上：
 
 ```bash
-# 登录 GitHub Container Registry
-echo "你的GitHub_PAT" | docker login ghcr.io -u 你的GitHub用户名 --password-stdin
-
-# 拉取镜像
-docker pull ghcr.io/你的用户名/w-pay:main
-
 # 运行容器
 docker run -d \
   --name wpay \
@@ -88,15 +93,12 @@ docker run -d \
   -e TLS_CERT_FILE=/app/certs/server.crt \
   -e TLS_KEY_FILE=/app/certs/server.key \
   -v /opt/wpay/certs:/app/certs \
-  ghcr.io/你的用户名/w-pay:main
+  wpay:latest
 ```
-
-## 查看构建状态
-
-在 GitHub 仓库页面点击 "Actions" 标签查看构建进度和日志。
 
 ## 注意事项
 
-1. 确保 GitHub 仓库设置为 Public 或你的账号有 Packages 权限
-2. 首次构建可能需要几分钟
-3. 镜像会存储在 GitHub Container Registry，免费额度有限
+1. 确保 Docker 已安装并运行
+2. 确保 PostgreSQL 和 Redis 已配置
+3. 确保 SSL 证书已放置在正确位置
+4. 首次运行前需要初始化数据库
