@@ -34,7 +34,7 @@ git add .
 git commit -m "Initial commit"
 
 # 添加远程仓库（替换为你的 GitHub 仓库地址）
-git remote add origin https://github.com/你的用户名/wpay.git
+git remote add origin https://github.com/你的用户名/w-pay.git
 
 # 推送到 GitHub
 git branch -M main
@@ -57,9 +57,9 @@ git push -u origin main
 
 ## 镜像标签规则
 
-- `main` 分支：`ghcr.io/你的用户名/wpay:main`
-- `v1.0.0` 标签：`ghcr.io/你的用户名/wpay:1.0.0`
-- Pull Request：`ghcr.io/你的用户名/wpay:pr-123`
+- `main` 分支：`ghcr.io/你的用户名/w-pay:main`
+- `v1.0.0` 标签：`ghcr.io/你的用户名/w-pay:1.0.0`
+- Pull Request：`ghcr.io/你的用户名/w-pay:pr-123`
 
 ## 在服务器上使用镜像
 
@@ -70,7 +70,7 @@ git push -u origin main
 echo "你的GitHub_PAT" | docker login ghcr.io -u 你的GitHub用户名 --password-stdin
 
 # 拉取镜像
-docker pull ghcr.io/你的用户名/wpay:main
+docker pull ghcr.io/你的用户名/w-pay:main
 
 # 运行容器
 docker run -d \
@@ -88,7 +88,7 @@ docker run -d \
   -e TLS_CERT_FILE=/app/certs/server.crt \
   -e TLS_KEY_FILE=/app/certs/server.key \
   -v /opt/wpay/certs:/app/certs \
-  ghcr.io/你的用户名/wpay:main
+  ghcr.io/你的用户名/w-pay:main
 ```
 
 ## 查看构建状态
