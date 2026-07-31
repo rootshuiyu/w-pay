@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS pay_channel (
     daily_used_fen BIGINT NOT NULL DEFAULT 0,
     daily_reset_date VARCHAR(10) DEFAULT NULL,
     rotate_weight INT NOT NULL DEFAULT 1,
+    platform_id BIGINT DEFAULT 0,
     mch_no VARCHAR(64) DEFAULT NULL,
     mch_key VARCHAR(256) DEFAULT NULL,
     app_id VARCHAR(64) DEFAULT NULL,
@@ -87,6 +88,31 @@ COMMENT ON COLUMN pay_channel.single_limit_fen IS '单笔上限(分)，0不限';
 COMMENT ON COLUMN pay_channel.daily_used_fen IS '当日已收(分)';
 COMMENT ON COLUMN pay_channel.mch_key IS '商户密钥/APIv3Key';
 COMMENT ON COLUMN pay_channel.serial_no IS '微信证书序列号';
+COMMENT ON COLUMN pay_channel.platform_id IS '所属代收平台，0=未分配';
+
+-- 3.3.1 pay_platform 代收平台表
+CREATE TABLE IF NOT EXISTS pay_platform (
+    id BIGSERIAL PRIMARY KEY,
+    platform_code VARCHAR(64) NOT NULL UNIQUE,
+    platform_name VARCHAR(128) NOT NULL,
+    app_key VARCHAR(64) NOT NULL UNIQUE,
+    allowed_ips VARCHAR(1024) DEFAULT NULL,
+    status SMALLINT NOT NULL DEFAULT 1,
+    remark VARCHAR(512) DEFAULT NULL,
+    created_at TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMPTZ(3) DEFAULT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_platform_code ON pay_platform (platform_code);
+CREATE INDEX IF NOT EXISTS idx_platform_name ON pay_platform (platform_name);
+CREATE INDEX IF NOT EXISTS idx_platform_status ON pay_platform (status);
+CREATE INDEX IF NOT EXISTS idx_platform_deleted_at ON pay_platform (deleted_at);
+COMMENT ON TABLE pay_platform IS '代收平台（码池组）';
+COMMENT ON COLUMN pay_platform.platform_code IS '平台编码';
+COMMENT ON COLUMN pay_platform.platform_name IS '平台名称';
+COMMENT ON COLUMN pay_platform.app_key IS '平台密钥';
+COMMENT ON COLUMN pay_platform.allowed_ips IS '允许的IP列表，逗号分隔';
+COMMENT ON COLUMN pay_platform.status IS '1启用 0停用';
 
 -- 3.4 orders 订单主表（预留分表：store_id + created_at）
 CREATE TABLE IF NOT EXISTS orders (
