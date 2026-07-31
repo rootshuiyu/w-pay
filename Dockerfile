@@ -1,16 +1,3 @@
-# 多阶段构建 - 前端构建阶段
-FROM node:20-alpine AS frontend-builder
-
-WORKDIR /web
-
-COPY web/package.json web/package-lock.json ./
-
-RUN npm install
-
-COPY web/ ./
-
-RUN npm run build
-
 # 多阶段构建 - Go构建阶段
 FROM golang:1.22-alpine AS builder
 
@@ -28,9 +15,6 @@ COPY go.mod go.sum ./
 
 # 复制源代码
 COPY . .
-
-# 从前端构建阶段复制构建好的文件
-COPY --from=frontend-builder /web/dist ./web/dist
 
 # 构建应用（自动下载依赖）
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -mod=mod -ldflags="-s -w" -o wpay main.go
@@ -52,7 +36,6 @@ WORKDIR /app
 COPY --from=builder /build/wpay .
 COPY --from=builder /build/config ./config
 COPY --from=builder /build/sql ./sql
-COPY --from=builder /build/web/dist ./web/dist
 
 # 创建必要的目录
 RUN mkdir -p /app/certs && \
