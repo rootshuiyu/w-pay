@@ -65,6 +65,14 @@ func GenerateAppKey() (string, error) {
 	return "pk_" + hex.EncodeToString(b), nil
 }
 
+func GeneratePlatformCode() (string, error) {
+	b := make([]byte, 8)
+	if _, err := rand.Read(b); err != nil {
+		return "", err
+	}
+	return "pc_" + hex.EncodeToString(b), nil
+}
+
 func (s *PayPlatformService) Create(req PlatformCreateRequest) (*model.PayPlatform, error) {
 	for _, field := range []string{req.PlatformCode, req.PlatformName, req.AppKey, req.AllowedIPs, req.Remark} {
 		if err := common.SanitizeString(field); err != nil {
@@ -77,8 +85,15 @@ func (s *PayPlatformService) Create(req PlatformCreateRequest) (*model.PayPlatfo
 	if strings.TrimSpace(req.AllowedIPs) == "" {
 		return nil, common.ErrInvalidInput("请填写对接 IP 白名单")
 	}
-	if req.PlatformCode != "" {
-		exist, err := s.platformDAO.FindByCode(req.PlatformCode)
+	platformCode := strings.TrimSpace(req.PlatformCode)
+	if platformCode == "" {
+		var err error
+		platformCode, err = GeneratePlatformCode()
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		exist, err := s.platformDAO.FindByCode(platformCode)
 		if err != nil {
 			return nil, err
 		}
@@ -108,7 +123,7 @@ func (s *PayPlatformService) Create(req PlatformCreateRequest) (*model.PayPlatfo
 	}
 	p := &model.PayPlatform{
 		BaseModel:    model.BaseModel{ID: id},
-		PlatformCode: req.PlatformCode,
+		PlatformCode: platformCode,
 		PlatformName: req.PlatformName,
 		AppKey:       appKey,
 		AllowedIPs:   strings.TrimSpace(req.AllowedIPs),
