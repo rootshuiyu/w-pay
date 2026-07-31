@@ -36,7 +36,7 @@ log:
   sensitive_retention_months: 6
 
 rate_limit:
-  requests_per_minute: 60
+  requests_per_minute: 300
 
 callback:
   idempotent_expire_hours: 48
