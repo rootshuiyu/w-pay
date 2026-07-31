@@ -1,0 +1,1 @@
+import{h as l}from"./api-CPwamEKB.js";let a=null,r=0;const c=6e4;async function m(e=!1){const t=Date.now();if(!e&&a&&t-r<c)return a;const o=await l.get("/admin/store/list",{params:{page:1,page_size:500}}),n=o.list||[];return a={list:n,map:Object.fromEntries(n.map(s=>[s.id,s.store_name])),total:o.total||n.length},r=t,a}function p(e,t){return e[t]||t}export{m as l,p as s};

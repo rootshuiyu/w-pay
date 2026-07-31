@@ -1,0 +1,1 @@
+const t=n=>n?String(n).replace("T"," ").slice(0,19):"",a=n=>({0:"warning",1:"success",2:"info",3:"danger"})[n]||"info",e=(n,r)=>!r||r<=0?0:Math.min(100,Math.round(n/r*100)),c=(n,r)=>{if(!r||r<=0)return"";const s=e(n,r);return s>=100?"exception":s>=80?"warning":"success"};export{e as a,t as f,c as q,a as s};
