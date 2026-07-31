@@ -1,5 +1,5 @@
 server:
-  port: 443
+  port: 8443
   mode: release
   tls_enabled: true
   cert_file: ${TLS_CERT_FILE:/etc/wpay/certs/server.crt}

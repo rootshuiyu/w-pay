@@ -27,7 +27,7 @@ RUN mkdir -p /app/certs && \
 USER wpay
 
 # 暴露端口
-EXPOSE 443 8090
+EXPOSE 8443 8090
 
 # 健康检查
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
