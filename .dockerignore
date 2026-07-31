@@ -34,7 +34,6 @@ Thumbs.db
 # 编译产物
 wpay.exe
 nbipay.exe
-wpay
 *.exe~
 
 # 环境变量
