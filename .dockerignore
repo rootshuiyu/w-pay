@@ -1,0 +1,57 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+docker-compose.test.yml
+.dockerignore
+
+# 文档
+*.md
+docs/
+
+# 测试
+tests/
+scripts/
+
+# 临时文件
+*.tmp
+*.log
+*.swp
+*~
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# 编译产物
+wpay.exe
+nbipay.exe
+wpay
+*.exe~
+
+# 环境变量
+.env
+.env.*
+
+# Node modules (前端)
+web/node_modules/
+web/dist/
+
+# 证书文件
+*.crt
+*.key
+*.pem
+certs/
+
+# 数据
+*.db
+*.sql
+!sql/init.sql

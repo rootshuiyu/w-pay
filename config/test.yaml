@@ -1,0 +1,50 @@
+server:
+  port: 8081
+  mode: test
+  tls_enabled: false
+
+database:
+  host: ${PG_HOST:127.0.0.1}
+  port: ${PG_PORT:5432}
+  user: ${PG_USER:postgres}
+  password: ${PG_PASSWORD:}
+  database: ${PG_DATABASE:wpay_test}
+  ssl_mode: ${PG_SSLMODE:disable}
+  max_idle_conns: 5
+  max_open_conns: 20
+
+redis:
+  addr: ${REDIS_ADDR:127.0.0.1:6379}
+  password: ${REDIS_PASSWORD:}
+  db: ${REDIS_DB:1}
+
+jwt:
+  secret: ${JWT_SECRET:test-jwt-secret}
+  expire_hours: 24
+
+order:
+  timeout_minutes: 15
+
+pay:
+  h5_app_name: ${PAY_H5_APP_NAME:聚合收银}
+  h5_app_url: ${PAY_H5_APP_URL:http://127.0.0.1:8081}
+
+log:
+  level: warn
+  sensitive_retention_months: 6
+
+rate_limit:
+  requests_per_minute: 10000
+
+callback:
+  idempotent_expire_hours: 48
+
+cache:
+  channel_ttl_hours: 1
+  channel_ttl_jitter_hours: 1
+
+security:
+  admin_ip_whitelist: ${ADMIN_IP_WHITELIST:}
+  callback_ip_whitelist: ${CALLBACK_IP_WHITELIST:}
+  pay_ip_whitelist: ${PAY_IP_WHITELIST:}
+  trusted_proxies: ${TRUSTED_PROXIES:}

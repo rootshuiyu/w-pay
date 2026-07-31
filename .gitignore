@@ -1,0 +1,53 @@
+# Binaries
+wpay
+wpay.exe
+nbipay.exe
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test
+*.test
+*.out
+
+# Go
+vendor/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Env & secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temp
+tmp/
+temp/
+
+# Excel exports
+*.xlsx
+
+# Frontend
+web/node_modules/
+web/dist/
+web/.vite/
+
+# Build artifacts
+*.tmp
+*.bak
+*~

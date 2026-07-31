@@ -1,0 +1,59 @@
+server:
+  port: ${SERVER_PORT:8090}
+  mode: debug
+  # 合规：生产环境必须启用 HTTPS，此处 dev 可关闭
+  tls_enabled: false
+  cert_file: ""
+  key_file: ""
+
+database:
+  host: ${PG_HOST:127.0.0.1}
+  port: ${PG_PORT:5432}
+  user: ${PG_USER:postgres}
+  password: ${PG_PASSWORD:}
+  database: ${PG_DATABASE:wpay}
+  ssl_mode: ${PG_SSLMODE:disable}
+  max_idle_conns: 10
+  max_open_conns: 100
+
+redis:
+  addr: ${REDIS_ADDR:127.0.0.1:6379}
+  password: ${REDIS_PASSWORD:}
+  db: ${REDIS_DB:0}
+
+jwt:
+  secret: ${JWT_SECRET:dev-secret-change-in-prod}
+  expire_hours: 24
+
+order:
+  timeout_minutes: 15
+
+pay:
+  h5_app_name: ${PAY_H5_APP_NAME:聚合收银}
+  h5_app_url: ${PAY_H5_APP_URL:http://localhost:8090}
+
+log:
+  level: debug
+  # 敏感日志留存周期（月），合规要求6个月
+  sensitive_retention_months: 6
+
+rate_limit:
+  # 每分钟最大请求数（按 IP）
+  requests_per_minute: 120
+
+callback:
+  # 回调幂等 key 过期时间（小时）
+  idempotent_expire_hours: 48
+
+cache:
+  # 渠道缓存 TTL（小时），加随机 jitter 防止雪崩
+  channel_ttl_hours: 24
+  channel_ttl_jitter_hours: 4
+
+security:
+  # 逗号分隔的 IP 或 CIDR；dev 留空表示不限制
+  admin_ip_whitelist: ${ADMIN_IP_WHITELIST:}
+  callback_ip_whitelist: ${CALLBACK_IP_WHITELIST:}
+  pay_ip_whitelist: ${PAY_IP_WHITELIST:127.0.0.1,::1}
+  # 可信反向代理；留空不信任 X-Forwarded-For（防伪造）
+  trusted_proxies: ${TRUSTED_PROXIES:127.0.0.1,::1}

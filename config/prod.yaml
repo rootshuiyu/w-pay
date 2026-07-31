@@ -1,0 +1,54 @@
+server:
+  port: 443
+  mode: release
+  tls_enabled: true
+  cert_file: ${TLS_CERT_FILE:/etc/wpay/certs/server.crt}
+  key_file: ${TLS_KEY_FILE:/etc/wpay/certs/server.key}
+
+database:
+  host: ${PG_HOST}
+  port: ${PG_PORT:5432}
+  user: ${PG_USER}
+  password: ${PG_PASSWORD}
+  database: ${PG_DATABASE:wpay}
+  ssl_mode: ${PG_SSLMODE:require}
+  max_idle_conns: 20
+  max_open_conns: 200
+
+redis:
+  addr: ${REDIS_ADDR}
+  password: ${REDIS_PASSWORD}
+  db: ${REDIS_DB:0}
+
+jwt:
+  secret: ${JWT_SECRET}
+  expire_hours: 8
+
+order:
+  timeout_minutes: 15
+
+pay:
+  h5_app_name: ${PAY_H5_APP_NAME:聚合收银}
+  h5_app_url: ${PAY_H5_APP_URL:https://your-domain.com}
+
+log:
+  level: info
+  sensitive_retention_months: 6
+
+rate_limit:
+  requests_per_minute: 60
+
+callback:
+  idempotent_expire_hours: 48
+
+cache:
+  channel_ttl_hours: 24
+  channel_ttl_jitter_hours: 6
+
+security:
+  # 合规：后台仅内网可达；回调仅放行微信/支付宝官方 IP。留空则退化为仅依赖防火墙/Nginx
+  admin_ip_whitelist: ${ADMIN_IP_WHITELIST:10.0.0.0/8,172.16.0.0/12,192.168.0.0/16}
+  callback_ip_whitelist: ${CALLBACK_IP_WHITELIST:}
+  pay_ip_whitelist: ${PAY_IP_WHITELIST:}
+  # Nginx 同机反代默认信任本机；多级代理时追加代理网段
+  trusted_proxies: ${TRUSTED_PROXIES:127.0.0.1,::1}

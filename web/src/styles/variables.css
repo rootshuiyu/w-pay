@@ -1,0 +1,16 @@
+:root {
+  --brand-primary: #1d2b53;
+  --brand-primary-light: #2c3e78;
+  --brand-accent: #14805e;
+  --page-bg: #f0f2f5;
+  --card-border: #ebeef5;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 20px;
+  --radius-md: 8px;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
