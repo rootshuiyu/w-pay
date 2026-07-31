@@ -15,6 +15,7 @@ WORKDIR /app
 COPY wpay .
 COPY config ./config
 COPY sql ./sql
+COPY web/dist ./web/dist
 
 # 添加执行权限
 RUN chmod +x wpay

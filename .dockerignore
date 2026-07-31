@@ -42,7 +42,6 @@ nbipay.exe
 
 # Node modules (前端)
 web/node_modules/
-web/dist/
 
 # 证书文件
 *.crt
