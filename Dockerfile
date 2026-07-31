@@ -1,4 +1,17 @@
-# 多阶段构建 - 构建阶段
+# 多阶段构建 - 前端构建阶段
+FROM node:20-alpine AS frontend-builder
+
+WORKDIR /web
+
+COPY web/package.json web/package-lock.json ./
+
+RUN npm install
+
+COPY web/ ./
+
+RUN npm run build
+
+# 多阶段构建 - Go构建阶段
 FROM golang:1.22-alpine AS builder
 
 # 安装必要的工具
@@ -15,6 +28,9 @@ RUN go mod download
 
 # 复制源代码
 COPY . .
+
+# 从前端构建阶段复制构建好的文件
+COPY --from=frontend-builder /web/dist ./web/dist
 
 # 构建应用
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o wpay main.go
