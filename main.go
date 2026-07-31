@@ -41,9 +41,11 @@ func main() {
 		if err := dao.AutoMigrate(); err != nil {
 			common.Log.Warn("auto migrate: %v", err)
 		}
-		if err := service.InitDefaultAdmin(); err != nil {
-			common.Log.Warn("init default admin: %v", err)
-		}
+	}
+	
+	// Initialize default admin for both dev and prod environments
+	if err := service.InitDefaultAdmin(); err != nil {
+		common.Log.Warn("init default admin: %v", err)
 	}
 
 	if err := service.InitIPWhitelist(); err != nil {
